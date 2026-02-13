@@ -3,7 +3,7 @@
 Консольная утилита на Java для фильтрации содержимого файлов.
 Программа читает строки из входных файлов, классифицирует их по типу данных и записывает в отдельные выходные файлы, собирая статистику.
 
-##  Описание
+## Описание
 
 Утилита принимает несколько входных файлов, содержащих:
 
@@ -13,9 +13,9 @@
 
 Каждая строка классифицируется и записывается в соответствующий файл:
 
-* `integers.txt` - целые числа
-* `floats.txt` - вещественные числа
-* `strings.txt` - строки
+* `integers.txt` — целые числа
+* `floats.txt` — вещественные числа
+* `strings.txt` — строки
 
 Файлы создаются **только при наличии данных соответствующего типа**.
 
@@ -39,7 +39,7 @@
 ## Технологии
 
 * **Java:** 17+
-* **Сборка:** без системы сборки / стандартный `javac`
+* **Сборка:** Maven / Gradle / стандартный `javac`
 * **Сторонние библиотеки:** не используются
 
 ---
@@ -67,13 +67,25 @@ ru.shift.filter
 
 ## Запуск
 
-### Компиляция
+Перед запуском создайте входные файлы (например, `in1.txt`, `in2.txt`) в корне проекта.
+
+### Способ 1. Запуск через javac (без системы сборки)
+
+Компиляция:
+
+**Windows (PowerShell):**
 
 ```bash
-javac -d out src/ru/shift/filter/**/*.java
+javac -d out (Get-ChildItem -Recurse src\main\java\*.java | % FullName)
 ```
 
-### Запуск
+**macOS / Linux:**
+
+```bash
+javac -d out $(find src/main/java -name "*.java")
+```
+
+Запуск:
 
 ```bash
 java -cp out ru.shift.filter.Main [опции] <input files>
@@ -83,6 +95,74 @@ java -cp out ru.shift.filter.Main [опции] <input files>
 
 ```bash
 java -cp out ru.shift.filter.Main -s -a -p sample- in1.txt in2.txt
+```
+
+---
+
+### Способ 2. Запуск через Maven
+
+Сборка проекта:
+
+```bash
+mvn clean package
+```
+
+После сборки будет создан файл:
+
+```
+target/shift-filter-1.0.0.jar
+```
+
+Запуск:
+
+```bash
+java -jar target/shift-filter-1.0.0.jar [опции] <input files>
+```
+
+Пример:
+
+```bash
+java -jar target/shift-filter-1.0.0.jar -s -a -p sample- in1.txt in2.txt
+```
+
+Альтернативный запуск через classpath:
+
+```bash
+java -cp target/classes ru.shift.filter.Main [опции] <input files>
+```
+
+---
+
+### Способ 3. Запуск через Gradle
+
+Сборка:
+
+```bash
+./gradlew clean build
+```
+
+После сборки будет создан файл:
+
+```
+build/libs/file-filter-1.0.0.jar
+```
+
+Запуск:
+
+```bash
+java -jar build/libs/file-filter-1.0.0.jar [опции] <input files>
+```
+
+---
+
+### Способ 4. Запуск через IntelliJ IDEA
+
+1. Откройте класс `Main.java`
+2. Нажмите Run рядом с методом `main`
+3. В настройках конфигурации добавьте аргументы программы:
+
+```
+-s -a -p sample- in1.txt in2.txt
 ```
 
 ---
